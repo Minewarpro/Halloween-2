@@ -66,12 +66,26 @@ class Tableau1 extends Phaser.Scene{
         for(let i=1;i<=5;i++) {
             this.load.image('filterSnow' + i, 'assets/level/weather/snow/frame-' + i + '.png');
         }
+        //animation boy
+        for(let i=1;i<=10;i++) {
+            this.load.image('idleBoy' + i, 'Characters/boy/boy_style_1/idle/Layer-' + i + '.png');
+        }
+        //animation boy2
+        for(let i=1;i<=10;i++) {
+            this.load.image('idleBoy2-' + i, 'Characters/boy/boy_style_1/idle2/Layer-' + i + '.png');
+        }
         //texture au fond  TODO élève : faire une boucle pour charger les 3 images et démontrer par la même que vous savez aller au plus simple
         for(let i=1;i<=3;i++){
             this.load.image('bg-animation-'+i, 'assets/level/background-2/bg-animation/bg-animation-'+i+'.png');
         }
     }
-
+    getFrames(prefix,length){
+        let frames=[];
+        for (let i=1;i<=length;i++){
+            frames.push({key: prefix+i});
+        }
+        return frames;
+    }
     /**
      * Crée la scène
      * TODO élèves : reproduire à l'identique assets/level/00-preview-example/sample1.jpg
@@ -203,6 +217,8 @@ class Tableau1 extends Phaser.Scene{
          * @type {Phaser.GameObjects.Container}
          */
         this.groundContainer=this.add.container(0,0);
+
+
         /**
          * Zombie
          * @type {Phaser.GameObjects.Image}
@@ -448,6 +464,43 @@ class Tableau1 extends Phaser.Scene{
         this.filterRain.play('Rain');
 
         /**
+         * filtre type idle au premier plan
+         * @type {Phaser.GameObjects.Sprite}
+         */
+
+        this.idleBoy = this.add.sprite(425, 110, 'idleBoy1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'idleBoy',
+            frames: this.getFrames('idleBoy',10),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+        this.idleBoy.play('idleBoy');
+        this.idleBoy.setScale(0.5)
+
+        /**
+         * filtre type idle au premier plan
+         * @type {Phaser.GameObjects.Sprite}
+         */
+
+        this.idleBoy2 = this.add.sprite(425, 110, 'idleBoy2-1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'idleBoy2',
+            frames: this.getFrames('idleBoy2-',10),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+
+        this.idleBoy2.play('idleBoy2');
+        this.idleBoy2.setScale(0.5)
+        this.idleBoy2.visible=false
+
+
+        /**
          * filtre type Snow au premier plan
          * @type {Phaser.GameObjects.Sprite}
          */
@@ -523,6 +576,7 @@ class Tableau1 extends Phaser.Scene{
         bgAnimationA.scrollFactorX=0;
         this.filterFilm.scrollFactorX=0;
         this.filterBlood.scrollFactorX=10;
+        this.idleBoy.scrollFactorX=10;
         this.filterRain.scrollFactorX=10;
         this.filterSnow.scrollFactorX=10;
         this.bg2Container.scrollFactorX=6;
@@ -571,6 +625,7 @@ class Tableau1 extends Phaser.Scene{
         });
     }
 
+
     /**
      * Cette fonction s'exécute en boucle (à peu près 60 fois par secondes)
      */
@@ -580,6 +635,15 @@ class Tableau1 extends Phaser.Scene{
 
         //petit effet de vibrance sur le filtre film au tout premier plan
         this.filterFilm.setAlpha(Phaser.Math.Between(95,100)/100)
+
+
+        if(Phaser.Math.Between(0,500)===50){
+            console.log("change animation")
+            this.idleBoy.visible=false;
+            this.idleBoy2.visible=true;
+
+
+        }
     }
 
 
