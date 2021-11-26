@@ -74,6 +74,17 @@ class Tableau1 extends Phaser.Scene{
         for(let i=1;i<=10;i++) {
             this.load.image('idleBoy2-' + i, 'Characters/boy/boy_style_1/idle2/Layer-' + i + '.png');
         }
+
+        //animation enemy1
+        for(let i=1;i<=10;i++) {
+            this.load.image('idleEnemy' + i, 'Characters/enemy 1/PNG/idle/Layer-' + i + '.png');
+        }
+
+        //animation enemy2
+        for(let i=1;i<=6;i++) {
+            this.load.image('idleEnemy2-' + i, 'Characters/enemy 2/PNG/idle/Layer-' + i + '.png');
+        }
+
         //texture au fond  TODO élève : faire une boucle pour charger les 3 images et démontrer par la même que vous savez aller au plus simple
         for(let i=1;i<=3;i++){
             this.load.image('bg-animation-'+i, 'assets/level/background-2/bg-animation/bg-animation-'+i+'.png');
@@ -499,6 +510,59 @@ class Tableau1 extends Phaser.Scene{
         this.idleBoy2.setScale(0.5)
         this.idleBoy2.visible=false
 
+        /**
+         * filtre type idleEnemy au premier plan
+         * @type {Phaser.GameObjects.Sprite}
+         */
+
+        this.idleEnemy = this.add.sprite(850, 150, 'idleEnemy1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'idleEnemy',
+            frames: this.getFrames('idleEnemy',10),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+        this.idleEnemy.play('idleEnemy');
+        this.idleEnemy.setScale(0.5)
+        this.idleEnemy.setFlipX(90)
+
+
+        /**
+         * filtre type idleEnemy 2 au premier plan
+         * @type {Phaser.GameObjects.Sprite}
+         */
+
+        this.idleEnemy2 = this.add.sprite(300, 0, 'idleEnemy2-1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'idleEnemy2',
+            frames: this.getFrames('idleEnemy2-',6),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+        this.idleEnemy2.play('idleEnemy2');
+        this.idleEnemy2.setScale(0.5)
+
+        /**
+         * filtre type idleEnemy 3 au premier plan
+         * @type {Phaser.GameObjects.Sprite}
+         */
+
+        this.idleEnemy3 = this.add.sprite(750, 0, 'idleEnemy2-1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'idleEnemy3',
+            frames: this.getFrames('idleEnemy2-',6),
+            frameRate: 16,
+            repeat: -1,
+
+        });
+        this.idleEnemy3.play('idleEnemy3');
+        this.idleEnemy3.setScale(0.2)
+        this.idleEnemy3.setFlipX(90)
 
         /**
          * filtre type Snow au premier plan
@@ -577,6 +641,9 @@ class Tableau1 extends Phaser.Scene{
         this.filterFilm.scrollFactorX=0;
         this.filterBlood.scrollFactorX=10;
         this.idleBoy.scrollFactorX=10;
+        this.idleEnemy.scrollFactorX=10;
+        this.idleEnemy2.scrollFactorX=10;
+        this.idleEnemy3.scrollFactorX=10;
         this.filterRain.scrollFactorX=10;
         this.filterSnow.scrollFactorX=10;
         this.bg2Container.scrollFactorX=6;
@@ -639,8 +706,8 @@ class Tableau1 extends Phaser.Scene{
 
         if(Phaser.Math.Between(0,500)===50){
             console.log("change animation")
-            this.idleBoy.visible=false;
-            this.idleBoy2.visible=true;
+            //this.idleBoy.visible=false;
+            //this.idleBoy2.visible=true;
 
 
         }
