@@ -70,6 +70,9 @@ class Tableau1 extends Phaser.Scene{
         for(let i=1;i<=10;i++) {
             this.load.image('idleBoy' + i, 'Characters/boy/boy_style_1/idle/Layer-' + i + '.png');
         }
+        for(let i=1;i<=8;i++) {
+            this.load.image('runBoy' + i, 'Characters/boy/boy_style_1/run/Layer-' + i + '.png');
+        }
         //animation boy2
         for(let i=1;i<=10;i++) {
             this.load.image('idleBoy2-' + i, 'Characters/boy/boy_style_1/idle2/Layer-' + i + '.png');
@@ -78,6 +81,9 @@ class Tableau1 extends Phaser.Scene{
         //animation enemy1
         for(let i=1;i<=10;i++) {
             this.load.image('idleEnemy' + i, 'Characters/enemy 1/PNG/idle/Layer-' + i + '.png');
+        }
+        for(let i=1;i<=8;i++) {
+            this.load.image('runEnemy' + i, 'Characters/enemy 1/PNG/run/Layer-' + i + '.png');
         }
 
         //animation enemy2
@@ -502,32 +508,55 @@ class Tableau1 extends Phaser.Scene{
             key: 'idleBoy2',
             frames: this.getFrames('idleBoy2-',10),
             frameRate: 16,
+
+
+        });
+
+        this.idleBoy2.setScale(0.5)
+
+        this.runBoy = this.add.sprite(425, 110, 'runBoy1').setOrigin(0,0);
+        //animation de 3 images
+        this.anims.create({
+            key: 'runBoy',
+            frames: this.getFrames('runBoy',8),
+            frameRate: 16,
             repeat: -1,
 
         });
 
-        this.idleBoy2.play('idleBoy2');
-        this.idleBoy2.setScale(0.5)
-        this.idleBoy2.visible=false
+        this.runBoy.play('runBoy');
+        this.runBoy.setScale(0.5)
+        this.runBoy.visible=false
 
         /**
          * filtre type idleEnemy au premier plan
          * @type {Phaser.GameObjects.Sprite}
          */
 
-        this.idleEnemy = this.add.sprite(850, 150, 'idleEnemy1').setOrigin(0,0);
+        this.runEnemy = this.add.sprite(850, 150, 'runEnemy1').setOrigin(0,0);
         //animation de 3 images
         this.anims.create({
-            key: 'idleEnemy',
-            frames: this.getFrames('idleEnemy',10),
-            frameRate: 16,
+            key: 'runEnemy',
+            frames: this.getFrames('runEnemy',8),
+            frameRate: 4,
             repeat: -1,
 
         });
-        this.idleEnemy.play('idleEnemy');
-        this.idleEnemy.setScale(0.5)
-        this.idleEnemy.setFlipX(90)
+        this.runEnemy.play('runEnemy');
+        this.runEnemy.setScale(0.5)
+        this.runEnemy.setFlipX(90)
+        this.tweens.add({
+            targets: this.runEnemy,
+            x: 775,
+            duration: 3000,
+            ease: 'Linear',
+            yoyo: true,
+            repeat:10,
+            delay: 0,
+            flipX: true,
 
+
+        });
 
         /**
          * filtre type idleEnemy 2 au premier plan
@@ -545,6 +574,15 @@ class Tableau1 extends Phaser.Scene{
         });
         this.idleEnemy2.play('idleEnemy2');
         this.idleEnemy2.setScale(0.5)
+        this.tweens.add({
+            targets: this.idleEnemy2,
+            y: 50,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat:10,
+            delay: 200
+        });
 
         /**
          * filtre type idleEnemy 3 au premier plan
@@ -563,6 +601,16 @@ class Tableau1 extends Phaser.Scene{
         this.idleEnemy3.play('idleEnemy3');
         this.idleEnemy3.setScale(0.2)
         this.idleEnemy3.setFlipX(90)
+        this.tweens.add({
+            targets: this.idleEnemy3,
+            y: 30,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat:10,
+            delay: 0
+
+        });
 
         /**
          * filtre type Snow au premier plan
@@ -641,7 +689,8 @@ class Tableau1 extends Phaser.Scene{
         this.filterFilm.scrollFactorX=0;
         this.filterBlood.scrollFactorX=10;
         this.idleBoy.scrollFactorX=10;
-        this.idleEnemy.scrollFactorX=10;
+        this.idleBoy2.scrollFactorX=10;
+        this.runEnemy.scrollFactorX=10;
         this.idleEnemy2.scrollFactorX=10;
         this.idleEnemy3.scrollFactorX=10;
         this.filterRain.scrollFactorX=10;
@@ -678,6 +727,28 @@ class Tableau1 extends Phaser.Scene{
                     me.filterSnow.visible=true;
                     me.filterRain.visible=false;
                     break;
+                case Phaser.Input.Keyboard.KeyCodes.D:
+                    me.idleBoy.flipX=false
+                    me.idleBoy.visible=false
+                    me.idleBoy.setX(me.idleBoy.x+3);
+                    me.runBoy.visible=true
+                    me.runBoy.flipX=false
+                    me.runBoy.setX(me.idleBoy.x+3);
+                    me.idleBoy2.visible=false
+                    me.idleBoy2.flipX=false
+                    me.idleBoy2.setX(me.idleBoy.x+3);
+                    break;
+                case Phaser.Input.Keyboard.KeyCodes.Q:
+                    me.idleBoy.flipX=true
+                    me.idleBoy.setX(me.idleBoy.x-3);
+                    me.idleBoy.visible=false
+                    me.runBoy.visible=true
+                    me.runBoy.flipX=true
+                    me.runBoy.setX(me.idleBoy.x-3);
+                    me.idleBoy2.visible=false
+                    me.idleBoy2.flipX=true
+                    me.idleBoy2.setX(me.idleBoy.x-3);
+                    break;
             }
         });
         this.input.keyboard.on('keyup', function(kevent)
@@ -687,6 +758,16 @@ class Tableau1 extends Phaser.Scene{
                 case Phaser.Input.Keyboard.KeyCodes.RIGHT:
                 case Phaser.Input.Keyboard.KeyCodes.LEFT:
                     me.speed=0;
+                    break;
+                case Phaser.Input.Keyboard.KeyCodes.D:
+                    me.idleBoy.visible=true
+                    me.runBoy.visible=false
+                    me.idleBoy2.visible=false
+                    break;
+                case Phaser.Input.Keyboard.KeyCodes.Q:
+                    me.idleBoy.visible=true
+                    me.runBoy.visible=false
+                    me.idleBoy2.visible=false
                     break;
             }
         });
@@ -703,11 +784,14 @@ class Tableau1 extends Phaser.Scene{
         //petit effet de vibrance sur le filtre film au tout premier plan
         this.filterFilm.setAlpha(Phaser.Math.Between(95,100)/100)
 
-
         if(Phaser.Math.Between(0,500)===50){
-            console.log("change animation")
-            //this.idleBoy.visible=false;
-            //this.idleBoy2.visible=true;
+            if (this.idleBoy.visible==true){
+                console.log("change animation")
+                this.idleBoy2.visible=true
+                this.idleBoy2.play('idleBoy2');
+            }
+
+
 
 
         }
